@@ -1,19 +1,13 @@
-function getSlugFromPath() {
-  const clean = window.location.pathname.replace(/\/+$/, "");
-  const parts = clean.split("/").filter(Boolean);
-
-  // if user visits ".../encoding/index.html"
-  let last = parts[parts.length - 1] || "";
-  if (last.endsWith(".html")) last = parts[parts.length - 2] || last;
-
-  return last;
+function getAppIdFromUrl() {
+  const params = new URLSearchParams(window.location.search);
+  return params.get("app");
 }
 
-async function loadAppData(slug) {
-  const res = await fetch("../apps.json", { cache: "no-store" });
+async function loadApps() {
+  const res = await fetch("./apps.json", { cache: "no-store" });
   if (!res.ok) throw new Error("Failed to load apps.json");
-  const data = await res.json();
-  return data[slug];
+  const json = await res.json();
+  return json.apps || [];
 }
 
 function setYear() {
@@ -24,54 +18,86 @@ function mailto(email, subject) {
   return `mailto:${email}?subject=${encodeURIComponent(subject)}`;
 }
 
+function setText(id, value) {
+  const el = document.getElementById(id);
+  if (el) el.textContent = value ?? "";
+}
+
+function setHref(id, value) {
+  const el = document.getElementById(id);
+  if (el) el.href = value ?? "#";
+}
+
+function showEl(id, show) {
+  const el = document.getElementById(id);
+  if (el) el.style.display = show ? "" : "none";
+}
+
+function youtubeEmbedUrlFromId(id) {
+  return `https://www.youtube-nocookie.com/embed/${id}`;
+}
+
 (async function init() {
   setYear();
 
-  const slug = getSlugFromPath();
-  const app = await loadAppData(slug);
+  const appId = getAppIdFromUrl();
+  const apps = await loadApps();
+  const app = apps.find(a => a.id === appId);
 
   if (!app) {
     document.title = "App not found";
-    document.getElementById("pageTitle").textContent = "App not found";
+    setText("title", "App not found");
+    setText("tagline", "This app ID doesn't exist.");
+    setText("description", "Go back and pick an app from the list.");
+    showEl("videoCard", false);
+    showEl("reviewBtn", false);
     return;
   }
 
-  // Title + meta
+  // Page title/meta
   document.title = `Support — ${app.name}`;
-  const meta = document.querySelector('meta[name="description"]');
-  if (meta) meta.setAttribute("content", `Support page for ${app.name}.`);
 
   // Header
-  document.getElementById("pageTitle").textContent = `Support — ${app.name}`;
-  document.getElementById("appIcon").src = `./${app.icon || "icon.png"}`;
-  document.getElementById("appIcon").alt = `${app.name} icon`;
+  setText("title", `Support — ${app.name}`);
+  setText("tagline", "Help, questions, and feedback • EN / IT");
 
-  // App Store
-  const appStoreUrl = app.appStoreUrl || "#";
-  document.getElementById("appStoreLinkTop").href = appStoreUrl;
-  document.getElementById("appStoreBtn").href = appStoreUrl;
+  // Icon
+  const icon = document.getElementById("appIcon");
+  icon.src = app.icon;
+  icon.alt = `${app.name} icon`;
 
-  // Support emails
+  // About
+  setText("description", app.description || app.tagline || "");
+
+  // App Store links
+  setHref("appStoreTop", app.appStoreUrl);
+  setHref("appStoreBtn", app.appStoreUrl);
+
+  // Optional review button
+  if (app.reviewUrl) {
+    setHref("reviewBtn", app.reviewUrl);
+    showEl("reviewBtn", true);
+  } else {
+    showEl("reviewBtn", false);
+  }
+
+  // Support email
   const email = app.supportEmail || "serj.tereshkin@gmail.com";
-  const enSubject = `${app.name} Support`;
-  const itSubject = `Supporto ${app.name}`;
 
-  const enA = document.getElementById("supportEmailEn");
-  enA.textContent = email;
-  enA.href = mailto(email, enSubject);
+  const en = document.getElementById("supportEn");
+  en.textContent = email;
+  en.href = mailto(email, `${app.name} Support`);
 
-  const itA = document.getElementById("supportEmailIt");
-  itA.textContent = email;
-  itA.href = mailto(email, itSubject);
+  const it = document.getElementById("supportIt");
+  it.textContent = email;
+  it.href = mailto(email, `Supporto ${app.name}`);
 
-  // YouTube (optional)
+  // Video (optional)
   if (app.youtubeId) {
-    const videoCard = document.getElementById("videoCard");
-    const frame = document.getElementById("youtubeFrame");
-    const link = document.getElementById("youtubeLink");
-
-    frame.src = `https://www.youtube-nocookie.com/embed/${app.youtubeId}`;
-    link.href = `https://www.youtube.com/watch?v=${app.youtubeId}`;
-    videoCard.style.display = "";
+    document.getElementById("youtubeFrame").src = youtubeEmbedUrlFromId(app.youtubeId);
+    document.getElementById("youtubeLink").href = `https://www.youtube.com/watch?v=${app.youtubeId}`;
+    showEl("videoCard", true);
+  } else {
+    showEl("videoCard", false);
   }
 })();
