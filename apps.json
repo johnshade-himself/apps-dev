@@ -26,12 +26,12 @@
       "id": "pistella",
       "name": "Luthier Web Site",
       "tagline": "Luthier web site with CMS and Booking system.",
-      "description": "Helps booking appointments. Pickup and Delivery dates and studio workflow for each order.",
+      "description": "Helps booking appointments. Managing Pickup and Delivery dates and studio workflow for each order. Work in progress at 90% :)",
       "icon": "./pistella/icon.png",
       "appStoreUrl": "https://pistellaproject.firebaseapp.com/",
       "reviewUrl": "",
       "supportEmail": "serj.tereshkin@gmail.com",
-      "youtubeId": "IP0gBcyeBRY"
+      "youtubeId": "WXocjaJQCyA"
     }
   ]
 }
