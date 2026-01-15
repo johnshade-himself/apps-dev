@@ -22,5 +22,16 @@
       "supportEmail": "serj.tereshkin@gmail.com",
       "youtubeId": "IP0gBcyeBRY"
     }
+    {
+      "id": "pistella",
+      "name": "Luthier Web Site",
+      "tagline": "Luthier web site with CMS and Booking system.",
+      "description": "Helps booking appointments. Pickup and Delivery dates and studio workflow for each order.",
+      "icon": "./pistella/icon.png",
+      "appStoreUrl": "https://pistellaproject.firebaseapp.com/",
+      "reviewUrl": "",
+      "supportEmail": "serj.tereshkin@gmail.com",
+      "youtubeId": "IP0gBcyeBRY"
+    }
   ]
 }
