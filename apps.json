@@ -6,7 +6,7 @@
       "tagline": "Movie search, watchlists, and a movie wheel picker.",
       "description": "Search movies fast, build watchlists, and let the roulette wheel pick what to watch next.",
       "icon": "./reel-roulette/icon.png",
-      "appStoreUrl": "#",
+      "appStoreUrl": "",
       "reviewUrl": "",
       "privacyUrl": "./reel-roulette/privacy.html",
       "supportEmail": "serj.tereshkin@gmail.com",
@@ -32,7 +32,7 @@
       "icon": "./pistella/icon.png",
       "appStoreUrl": "https://pistellaproject.firebaseapp.com/",
       "reviewUrl": "",
-      "privacyUrl": "#",
+      "privacyUrl": "",
       "supportEmail": "serj.tereshkin@gmail.com",
       "youtubeId": "WXocjaJQCyA"
     }

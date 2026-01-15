@@ -89,17 +89,31 @@ function youtubeEmbedUrlFromId(id) {
     showEl("privacyBtn", false);
   }
 
-  const storeUrl = app.appStoreUrl;
+  const storeUrl = (app.appStoreUrl || "").trim();
+  const hasStore = storeUrl && storeUrl !== "#";
 
-  if (!storeUrl || storeUrl === "#") {
-    showEl("appStoreBtn", false);
-    showEl("appStoreTop", false); // optional
+  const topLink = document.getElementById("appStoreTop");
+  const storeBtn = document.getElementById("appStoreBtn");
+
+  if (hasStore) {
+    topLink.href = storeUrl;
+    topLink.target = "_blank";
+    topLink.rel = "noopener";
+    topLink.classList.remove("link-disabled");
+
+    storeBtn.href = storeUrl;
+    storeBtn.style.display = "";
   } else {
-    setHref("appStoreTop", storeUrl);
-    setHref("appStoreBtn", storeUrl);
-    showEl("appStoreBtn", true);
-    showEl("appStoreTop", true);
+    // keep the header visible, but disable the link
+    topLink.href = "#";
+    topLink.removeAttribute("target");
+    topLink.removeAttribute("rel");
+    topLink.classList.add("link-disabled");
+
+    // hide the App Store button (or you can disable it)
+    storeBtn.style.display = "none";
   }
+
 
   // Support email
   const email = app.supportEmail || "serj.tereshkin@gmail.com";

@@ -181,3 +181,22 @@ footer{
   padding-top:10px;
 }
 .small{ font-size:13px; color:var(--muted); }
+
+/* When App Store link is not available, keep header but disable clicking */
+.link-disabled {
+  pointer-events: none;
+  cursor: default;
+}
+.link-disabled:hover {
+  text-decoration: none;
+}
+
+.top { flex-wrap: wrap; }
+
+@media (max-width: 560px){
+  .actions{
+    margin-left: 0;
+    width: 100%;
+    justify-content: flex-start;
+  }
+}
