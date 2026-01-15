@@ -81,6 +81,26 @@ function youtubeEmbedUrlFromId(id) {
     showEl("reviewBtn", false);
   }
 
+  // Optional privacy button
+  if (app.privacyUrl) {
+    setHref("privacyBtn", app.privacyUrl);
+    showEl("privacyBtn", true);
+  } else {
+    showEl("privacyBtn", false);
+  }
+
+  const storeUrl = app.appStoreUrl;
+
+  if (!storeUrl || storeUrl === "#") {
+    showEl("appStoreBtn", false);
+    showEl("appStoreTop", false); // optional
+  } else {
+    setHref("appStoreTop", storeUrl);
+    setHref("appStoreBtn", storeUrl);
+    showEl("appStoreBtn", true);
+    showEl("appStoreTop", true);
+  }
+
   // Support email
   const email = app.supportEmail || "serj.tereshkin@gmail.com";
 
